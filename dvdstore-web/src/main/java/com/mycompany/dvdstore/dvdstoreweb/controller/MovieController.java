@@ -5,9 +5,10 @@ import com.mycompany.dvdstore.entity.MovieForm;
 import com.mycompany.dvdstore.service.MovieServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
@@ -17,13 +18,7 @@ public class MovieController {
     @Autowired
     MovieServiceInterface movieService;
 
-    @GetMapping("/{id}")
-    public String displayMovieCard(@PathVariable("id") long number, Model model) {
-        model.addAttribute("movie", movieService.getMovieById(number));
-        return "movie-details";
-    }
-
-    @PostMapping("")
+    @PostMapping("/add")
     public String addMovie(@Valid @ModelAttribute MovieForm movieForm, BindingResult results){
         if(results.hasErrors()) {
             return "add-movie-form";
@@ -35,6 +30,7 @@ public class MovieController {
         movieService.registerMovie(movie);
         return "movie-added";
     }
+
 
     public MovieServiceInterface getMovieService() {
         return movieService;
